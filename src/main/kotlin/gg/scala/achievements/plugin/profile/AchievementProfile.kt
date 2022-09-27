@@ -26,6 +26,9 @@ data class AchievementProfile(
     fun hasCollectedStage(achievement: Achievement, stage: Int) =
         this.collectedStages.contains("${achievement.id}-$stage")
 
+    fun setCollectedStage(achievement: Achievement, stage: Int) =
+        this.collectedStages.add("${achievement.id}-$stage")
+
     fun save() = DataStoreObjectControllerCache
         .findNotNull<AchievementProfile>()
         .save(this, DataStoreStorageType.MONGO)

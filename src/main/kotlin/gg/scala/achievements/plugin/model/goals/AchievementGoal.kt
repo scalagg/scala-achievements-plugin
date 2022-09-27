@@ -15,7 +15,7 @@ interface AchievementGoal<T>
     val id: String
 
     val requirement: T
-    val description: List<String>
+    val description: String
 
     fun createDataCollector(profile: AchievementProfile): AchievementGoalDataCollector<T>
 }

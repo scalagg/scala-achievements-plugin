@@ -8,7 +8,7 @@ import org.bukkit.entity.Player
  */
 interface AchievementReward
 {
-    val description: List<String>
+    val description: String
 
     fun applyTo(player: Player)
 }

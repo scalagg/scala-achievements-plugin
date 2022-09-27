@@ -8,15 +8,18 @@ import gg.scala.achievements.plugin.profile.AchievementProfile
  */
 data class Achievement(
     val id: String, val name: String,
-    val stages: List<AchievementStage>
+    val stages: LinkedHashSet<AchievementStage>
 )
 {
-    fun metAllGoalRequirementsAndCollected(profile: AchievementProfile, stage: AchievementStage) =
-        stage.metAllGoalRequirements(profile) && stage.goals
+    fun collectedAllRewards(profile: AchievementProfile, stage: AchievementStage) =
+        stage.goals
             .toMutableList()
             .all {
                 profile.hasCollectedStage(this, stage.goals.indexOf(it))
             }
+
+    fun metAllGoalRequirementsAndCollected(profile: AchievementProfile, stage: AchievementStage) =
+        stage.metAllGoalRequirements(profile) && collectedAllRewards(profile, stage)
 
     fun completedAllStages(profile: AchievementProfile) =
         this.stages.all {

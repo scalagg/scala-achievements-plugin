@@ -35,7 +35,7 @@ object AchievementService
         // testing
         registerAchievement(
             Achievement(
-                "horse", "Horse Driving", listOf(
+                "horse", "Horse Driving", linkedSetOf(
                     AchievementStage(
                         listOf("${CC.GRAY}Drive a single horse!"),
                         listOf(
@@ -43,7 +43,7 @@ object AchievementService
                             {
                                 override val id = "horses_driven"
                                 override val requirement = 1
-                                override val description = listOf("Driven horses")
+                                override val description = "Driven horses"
 
                                 override fun createDataCollector(profile: AchievementProfile): AchievementGoalDataCollector<Int>
                                 {
@@ -54,7 +54,7 @@ object AchievementService
                         listOf(
                             object : AchievementReward
                             {
-                                override val description = listOf("1 wool")
+                                override val description = "1 wool"
 
                                 override fun applyTo(player: Player)
                                 {
