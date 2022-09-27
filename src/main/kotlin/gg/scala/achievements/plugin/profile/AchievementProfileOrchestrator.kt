@@ -1,7 +1,7 @@
-package gg.minequest.sync.profile
+package gg.scala.achievements.plugin.profile
 
-import gg.minequest.sync.ScalaAchievementsPlugin
-import gg.minequest.sync.model.goals.AchievementGoalDataCollector
+import gg.scala.achievements.plugin.ScalaAchievementsPlugin
+import gg.scala.achievements.plugin.model.goals.AchievementGoalDataCollector
 import gg.scala.commons.persist.ProfileOrchestrator
 import gg.scala.flavor.inject.Inject
 import gg.scala.flavor.service.Configure

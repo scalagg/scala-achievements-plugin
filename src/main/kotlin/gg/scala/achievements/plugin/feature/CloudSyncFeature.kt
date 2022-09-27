@@ -1,4 +1,4 @@
-package gg.minequest.sync.feature
+package gg.scala.achievements.plugin.feature
 
 import gg.scala.cloudsync.shared.discovery.CloudSyncDiscoveryService
 import gg.scala.commons.annotations.plugin.SoftDependency

@@ -1,4 +1,4 @@
-package gg.minequest.sync.model.goals
+package gg.scala.achievements.plugin.model.goals
 
 import net.evilblock.cubed.serializers.impl.AbstractTypeSerializable
 

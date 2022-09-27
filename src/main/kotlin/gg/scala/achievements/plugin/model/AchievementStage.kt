@@ -1,7 +1,7 @@
-package gg.minequest.sync.model
+package gg.scala.achievements.plugin.model
 
-import gg.minequest.sync.model.goals.AchievementGoal
-import gg.minequest.sync.profile.AchievementProfile
+import gg.scala.achievements.plugin.model.goals.AchievementGoal
+import gg.scala.achievements.plugin.profile.AchievementProfile
 
 /**
  * @author GrowlyX

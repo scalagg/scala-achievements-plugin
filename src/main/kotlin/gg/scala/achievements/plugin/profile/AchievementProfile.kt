@@ -1,9 +1,9 @@
-package gg.minequest.sync.profile
+package gg.scala.achievements.plugin.profile
 
-import gg.minequest.sync.model.Achievement
-import gg.minequest.sync.model.AchievementStage
-import gg.minequest.sync.model.goals.AchievementGoalDataCollector
-import gg.minequest.sync.service.AchievementService
+import gg.scala.achievements.plugin.model.Achievement
+import gg.scala.achievements.plugin.model.AchievementStage
+import gg.scala.achievements.plugin.model.goals.AchievementGoalDataCollector
+import gg.scala.achievements.plugin.service.AchievementService
 import gg.scala.store.controller.DataStoreObjectControllerCache
 import gg.scala.store.storage.storable.IDataStoreObject
 import gg.scala.store.storage.type.DataStoreStorageType

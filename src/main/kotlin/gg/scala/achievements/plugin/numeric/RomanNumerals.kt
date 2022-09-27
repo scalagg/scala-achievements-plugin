@@ -1,4 +1,4 @@
-package gg.minequest.sync.numeric
+package gg.scala.achievements.plugin.numeric
 
 import java.util.*
 

@@ -1,4 +1,4 @@
-package gg.minequest.sync
+package gg.scala.achievements.plugin
 
 import gg.scala.commons.ExtendedScalaPlugin
 import me.lucko.helper.plugin.ap.Plugin

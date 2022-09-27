@@ -1,11 +1,11 @@
-package gg.minequest.sync.service
+package gg.scala.achievements.plugin.service
 
-import gg.minequest.sync.model.Achievement
-import gg.minequest.sync.model.AchievementReward
-import gg.minequest.sync.model.AchievementStage
-import gg.minequest.sync.model.goals.AchievementGoal
-import gg.minequest.sync.model.goals.AchievementGoalDataCollector
-import gg.minequest.sync.profile.AchievementProfile
+import gg.scala.achievements.plugin.model.Achievement
+import gg.scala.achievements.plugin.model.AchievementReward
+import gg.scala.achievements.plugin.model.AchievementStage
+import gg.scala.achievements.plugin.model.goals.AchievementGoal
+import gg.scala.achievements.plugin.model.goals.AchievementGoalDataCollector
+import gg.scala.achievements.plugin.profile.AchievementProfile
 import gg.scala.flavor.service.Configure
 import gg.scala.flavor.service.Service
 import net.evilblock.cubed.util.CC
@@ -22,18 +22,17 @@ object AchievementService
 {
     private val registered = mutableListOf<Achievement>()
 
+    fun achievements() = registered
+
     class IntegerDataCollector : AchievementGoalDataCollector<Int>
     {
         override var value = 0
     }
 
-
-    fun achievements() = this.registered
-
     @Configure
     fun configure()
     {
-        // test
+        // testing
         registerAchievement(
             Achievement(
                 "horse", "Horse Driving", listOf(
@@ -76,6 +75,6 @@ object AchievementService
                 "Cannot register achievement with no stages!"
             )
 
-        this.registered += achievement
+        registered += achievement
     }
 }

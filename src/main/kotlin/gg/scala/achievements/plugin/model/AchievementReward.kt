@@ -1,4 +1,4 @@
-package gg.minequest.sync.model
+package gg.scala.achievements.plugin.model
 
 import org.bukkit.entity.Player
 
