@@ -30,6 +30,9 @@ object AchievementService
     class IntegerDataCollector : AchievementGoalDataCollector<Int>
     {
         override var value = 0
+
+        override fun getAbstractType() =
+            IntegerDataCollector::class.java
     }
 
     @Configure
