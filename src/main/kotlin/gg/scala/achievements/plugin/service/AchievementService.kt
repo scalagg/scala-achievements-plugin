@@ -41,13 +41,10 @@ object AchievementService
         // testing
         Events.subscribe(PlayerGameModeChangeEvent::class.java)
             .handler {
-                val profile = AchievementProfileOrchestrator
+                AchievementProfileOrchestrator
                     .find(it.player)
-                    ?: return@handler
-
-                profile
-                    .dataCollector<IntegerDataCollector>("horses_driven")
-                    .updateValue(1)
+                    ?.dataCollector<IntegerDataCollector>("horses_driven")
+                    ?.updateValue(1)
             }
 
         registerAchievement(
