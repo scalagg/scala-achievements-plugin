@@ -1,5 +1,7 @@
 package gg.scala.achievements.plugin.model.goals
 
+import gg.scala.achievements.plugin.profile.AchievementProfile
+import gg.scala.achievements.plugin.service.AchievementService
 import net.evilblock.cubed.serializers.impl.AbstractTypeSerializable
 
 /**
@@ -8,10 +10,47 @@ import net.evilblock.cubed.serializers.impl.AbstractTypeSerializable
  */
 interface AchievementGoalDataCollector<T> : AbstractTypeSerializable
 {
+    val goalId: String
+
+    /**
+     * Please use the [updateValue] function below
+     * rather than using the built-in Kotlin setter.
+     */
     var value: T
 
-    fun updateValue(newValue: T)
+    /**
+     * Unfortunately, we require all this logic to prevent data
+     * collectors from being added onto when a player's achievement isn't at the proper stage.
+     *
+     * Please call this asynchronously if run a lot.
+     */
+    fun updateValue(newValue: T, profile: AchievementProfile)
     {
-        this.value = newValue
+        val achievement = AchievementService
+            .achievements()
+            .firstOrNull {
+                it.stages.any { stage -> stage.getGoalByIdString(goalId) != null }
+            }
+            ?: return
+
+        val determinedStage = achievement.stages
+            .firstOrNull {
+                !achievement.collectedRewardsFor(profile, it)
+            }
+            ?: achievement.stages.last()
+
+        val collectedRewards = achievement
+            .collectedRewardsFor(profile, determinedStage)
+
+        val metGoalReqs = determinedStage
+            .metAllGoalRequirements(profile)
+
+        val requiresAwardCollection = !collectedRewards && metGoalReqs
+        val requiresLiterallyNothing = collectedRewards && metGoalReqs
+
+        if (!requiresLiterallyNothing && !requiresAwardCollection)
+        {
+            this.value = newValue
+        }
     }
 }

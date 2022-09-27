@@ -27,7 +27,9 @@ object AchievementService
 
     fun achievements() = registered
 
-    class IntegerDataCollector : AchievementGoalDataCollector<Int>
+    class IntegerDataCollector(
+        override val goalId: String
+    ) : AchievementGoalDataCollector<Int>
     {
         override var value = 0
 
@@ -41,10 +43,20 @@ object AchievementService
         // testing
         Events.subscribe(PlayerGameModeChangeEvent::class.java)
             .handler {
-                AchievementProfileOrchestrator
+                val profile = AchievementProfileOrchestrator
                     .find(it.player)
-                    ?.dataCollector<IntegerDataCollector>("horses_driven")
-                    ?.updateValue(1)
+                    ?: return@handler
+
+                profile
+                    .dataCollector<IntegerDataCollector>("horses_driven")
+                    .updateValue(1, profile)
+
+                val collector = profile
+                    .dataCollector<IntegerDataCollector>("horses_driven_v2")
+
+                collector.updateValue(
+                    collector.value + 1, profile
+                )
             }
 
         registerAchievement(
@@ -61,7 +73,7 @@ object AchievementService
 
                                 override fun createDataCollector(profile: AchievementProfile): AchievementGoalDataCollector<Int>
                                 {
-                                    return IntegerDataCollector()
+                                    return IntegerDataCollector(id)
                                 }
                             }
                         ),
@@ -73,6 +85,33 @@ object AchievementService
                                 override fun applyTo(player: Player)
                                 {
                                     player.inventory.addItem(ItemStack(Material.WOOL))
+                                }
+                            }
+                        )
+                    ),
+                    AchievementStage(
+                        listOf("${CC.GRAY}Drive MULTIPLE horses!!!!!"),
+                        listOf(
+                            object : AchievementGoal<Int>
+                            {
+                                override val id = "horses_driven_v2"
+                                override val requirement = 5
+                                override val description = "Driven horses"
+
+                                override fun createDataCollector(profile: AchievementProfile): AchievementGoalDataCollector<Int>
+                                {
+                                    return IntegerDataCollector(id)
+                                }
+                            }
+                        ),
+                        listOf(
+                            object : AchievementReward
+                            {
+                                override val description = "5 wool"
+
+                                override fun applyTo(player: Player)
+                                {
+                                    player.inventory.addItem(ItemStack(Material.WOOL, 5))
                                 }
                             }
                         )

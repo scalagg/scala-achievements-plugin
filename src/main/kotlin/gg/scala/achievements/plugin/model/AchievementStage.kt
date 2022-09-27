@@ -13,14 +13,8 @@ class AchievementStage(
     val rewards: List<AchievementReward>
 )
 {
-    inline fun <reified T> getGoalByType() =
-        this.goals.filterIsInstance<T>().first()
-
-    inline fun <reified T> getGoalById(id: Int) =
-        this.goals[id] as T
-
-    fun getGoalById(id: Int) =
-        this.goals[id]
+    fun getGoalByIdString(id: String) =
+        this.goals.firstOrNull { it.id == id }
 
     fun metAllGoalRequirements(profile: AchievementProfile) =
         this.goals.all {
