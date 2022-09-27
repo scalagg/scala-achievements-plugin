@@ -76,7 +76,7 @@ class AchievementViewMenu : PaginatedMenu()
                 .description.toMutableList()
 
             description += ""
-            description += "${CC.GOLD}Goals:"
+            description += "${CC.PRI}Goals:"
 
             for (goal in determinedStage.goals)
             {
@@ -84,12 +84,12 @@ class AchievementViewMenu : PaginatedMenu()
                     ?: continue
 
                 description += "${CC.WHITE} - ${goal.description} ${CC.GRAY}(${
-                    "${CC.GOLD}${dataCollector.value}${CC.GRAY}/${CC.GOLD}${goal.requirement}${CC.GRAY}"
+                    "${CC.PRI}${dataCollector.value}${CC.GRAY}/${CC.PRI}${goal.requirement}${CC.GRAY}"
                 })"
             }
 
             description += ""
-            description += "${CC.GOLD}Rewards:"
+            description += "${CC.PRI}Rewards:"
 
             for (reward in determinedStage.rewards)
             {
@@ -118,7 +118,7 @@ class AchievementViewMenu : PaginatedMenu()
                         XMaterial.GRAY_DYE
                 )
                 .name(
-                    "${CC.B_GOLD}${achievement.name}${
+                    "${CC.B_PRI}${achievement.name}${
                         if (achievement.stages.size == 1) "" else ": ${
                             RomanNumerals.toRoman(stageIndex + 1)
                         }"
