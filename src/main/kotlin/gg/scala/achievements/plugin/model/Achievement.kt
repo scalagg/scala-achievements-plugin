@@ -11,7 +11,7 @@ data class Achievement(
     val stages: LinkedHashSet<AchievementStage>
 )
 {
-    fun collectedAllRewards(profile: AchievementProfile, stage: AchievementStage) =
+    fun collectedRewardsFor(profile: AchievementProfile, stage: AchievementStage) =
         profile.hasCollectedStage(this, stages.indexOf(stage))
 
     fun completedAllStages(profile: AchievementProfile) =

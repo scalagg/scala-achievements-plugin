@@ -18,7 +18,7 @@ data class AchievementProfile(
 ) : IDataStoreObject
 {
     val dataCollectors = mutableMapOf<String, AchievementGoalDataCollector<*>>()
-    val collectedStages = mutableListOf<String>()
+    private val collectedStages = mutableListOf<String>()
 
     inline fun <reified T : AchievementGoalDataCollector<*>> dataCollector(id: String) =
         this.dataCollectors[id] as T

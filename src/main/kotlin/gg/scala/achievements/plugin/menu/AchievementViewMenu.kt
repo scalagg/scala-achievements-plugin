@@ -10,6 +10,7 @@ import net.evilblock.cubed.menu.Button
 import net.evilblock.cubed.menu.pagination.PaginatedMenu
 import net.evilblock.cubed.util.CC
 import net.evilblock.cubed.util.bukkit.ItemBuilder
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.inventory.InventoryView
@@ -50,7 +51,7 @@ class AchievementViewMenu : PaginatedMenu()
     {
         private val determinedStage = achievement.stages
             .firstOrNull {
-                !achievement.collectedAllRewards(profile, it) || !it.metAllGoalRequirements(profile)
+                !achievement.collectedRewardsFor(profile, it)
             }
             // We're expecting the player to be on their last
             // stage if they don't pass any of these checks.
@@ -60,13 +61,23 @@ class AchievementViewMenu : PaginatedMenu()
             .indexOf(determinedStage)
 
         private val collectedRewards = achievement
-            .collectedAllRewards(profile, determinedStage)
+            .collectedRewardsFor(profile, determinedStage)
 
         private val metGoalReqs = determinedStage
             .metAllGoalRequirements(profile)
 
         private val requiresAwardCollection = !collectedRewards && metGoalReqs
         private val requiresLiterallyNothing = collectedRewards && metGoalReqs
+
+        init
+        {
+            Bukkit.getPlayer(profile.identifier)
+                ?.sendMessage(
+                    arrayOf(
+                        "$requiresAwardCollection, $requiresLiterallyNothing, $collectedRewards, $metGoalReqs"
+                    )
+                )
+        }
 
         override fun getButtonItem(player: Player): ItemStack
         {

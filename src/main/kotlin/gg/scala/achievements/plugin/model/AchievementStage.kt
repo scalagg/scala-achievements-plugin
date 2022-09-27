@@ -24,10 +24,12 @@ class AchievementStage(
 
     fun metAllGoalRequirements(profile: AchievementProfile) =
         this.goals.all {
-            profile.dataCollectors.entries
+            val collector = profile.dataCollectors.entries
                 .find { collector ->
                     collector.key == it.id
                 }
-                ?.value == it.requirement
+                ?: return@all false
+
+            collector.value.value == it.requirement
         }
 }
