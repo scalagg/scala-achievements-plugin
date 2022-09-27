@@ -113,7 +113,7 @@ class AchievementViewMenu : PaginatedMenu()
                     else if (requiresAwardCollection)
                         XMaterial.PINK_DYE
                     else
-                        XMaterial.LIGHT_GRAY_DYE
+                        XMaterial.GRAY_DYE
                 )
                 .name(
                     "${CC.B_GOLD}${achievement.name}${
