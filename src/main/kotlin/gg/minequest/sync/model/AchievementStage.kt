@@ -9,7 +9,8 @@ import gg.minequest.sync.profile.AchievementProfile
  */
 class AchievementStage(
     val description: List<String>,
-    val goals: List<AchievementGoal<*>>
+    val goals: List<AchievementGoal<*>>,
+    val rewards: List<AchievementReward>
 )
 {
     inline fun <reified T> getGoalByType() =

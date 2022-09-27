@@ -31,6 +31,14 @@ object AchievementProfileOrchestrator : ProfileOrchestrator<AchievementProfile>(
         }
     }
 
+    override fun postLoad(uniqueId: UUID)
+    {
+        val profile = this.find(uniqueId)
+            ?: return
+
+        profile.populateDataCollectors()
+    }
+
     override fun new(uniqueId: UUID) = AchievementProfile(uniqueId)
     override fun type() = AchievementProfile::class
 }
