@@ -9,4 +9,9 @@ import net.evilblock.cubed.serializers.impl.AbstractTypeSerializable
 interface AchievementGoalDataCollector<T> : AbstractTypeSerializable
 {
     var value: T
+
+    fun updateValue(newValue: T)
+    {
+        this.value = newValue
+    }
 }
