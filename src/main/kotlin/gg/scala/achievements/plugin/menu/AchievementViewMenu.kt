@@ -9,6 +9,7 @@ import gg.scala.achievements.plugin.service.AchievementService
 import net.evilblock.cubed.menu.Button
 import net.evilblock.cubed.menu.pagination.PaginatedMenu
 import net.evilblock.cubed.util.CC
+import net.evilblock.cubed.util.bukkit.Constants
 import net.evilblock.cubed.util.bukkit.ItemBuilder
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -68,16 +69,6 @@ class AchievementViewMenu : PaginatedMenu()
 
         private val requiresAwardCollection = !collectedRewards && metGoalReqs
         private val requiresLiterallyNothing = collectedRewards && metGoalReqs
-
-        init
-        {
-            Bukkit.getPlayer(profile.identifier)
-                ?.sendMessage(
-                    arrayOf(
-                        "$requiresAwardCollection, $requiresLiterallyNothing, $collectedRewards, $metGoalReqs"
-                    )
-                )
-        }
 
         override fun getButtonItem(player: Player): ItemStack
         {
@@ -151,6 +142,10 @@ class AchievementViewMenu : PaginatedMenu()
 
                 profile.setCollectedStage(achievement, stageIndex)
                 profile.save()
+
+                player.sendMessage(
+                    "${CC.B_PRI}Achievements ${CC.B_GRAY}${Constants.DOUBLE_ARROW_RIGHT} ${CC.GREEN}You've collected rewards for the ${CC.SEC}${achievement.name}${CC.GREEN} achievement!"
+                )
             }
         }
     }
