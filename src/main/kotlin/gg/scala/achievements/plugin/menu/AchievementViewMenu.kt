@@ -84,7 +84,10 @@ class AchievementViewMenu : PaginatedMenu()
                     ?: continue
 
                 description += "${CC.WHITE} - ${goal.description} ${CC.GRAY}(${
-                    "${CC.PRI}${dataCollector.value}${CC.GRAY}/${CC.PRI}${goal.requirement}${CC.GRAY}"
+                    if (dataCollector.usesAlternativeDisplayType())
+                        dataCollector.parseAlternativeDisplayType(goal.requirement)
+                    else
+                        "${dataCollector.value}/${goal.requirement}"
                 })"
             }
 

@@ -18,6 +18,16 @@ interface AchievementGoalDataCollector<T> : AbstractTypeSerializable
      */
     var value: T
 
+    fun usesAlternativeDisplayType(): Boolean
+    {
+        return false
+    }
+
+    fun parseAlternativeDisplayType(requirement: Any?): String
+    {
+        return ""
+    }
+
     /**
      * Unfortunately, we require all this logic to prevent data
      * collectors from being added onto when a player's achievement isn't at the proper stage.
