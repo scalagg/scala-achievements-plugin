@@ -8,7 +8,9 @@ import gg.scala.achievements.plugin.profile.AchievementProfile
  */
 data class Achievement(
     val id: String, val name: String,
-    val stages: LinkedHashSet<AchievementStage>
+    val stages: LinkedHashSet<AchievementStage>,
+    val rewardsPlayer: Boolean = true,
+    val visibleWithinMenu: Boolean = true
 )
 {
     fun collectedRewardsFor(profile: AchievementProfile, stage: AchievementStage) =

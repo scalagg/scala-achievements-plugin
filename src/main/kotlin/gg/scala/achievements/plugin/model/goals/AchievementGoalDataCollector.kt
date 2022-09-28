@@ -18,15 +18,8 @@ interface AchievementGoalDataCollector<T> : AbstractTypeSerializable
      */
     var value: T
 
-    fun usesAlternativeDisplayType(): Boolean
-    {
-        return false
-    }
-
-    fun parseAlternativeDisplayType(requirement: Any?): String
-    {
-        return ""
-    }
+    fun usesAlternativeDisplayType() = false
+    fun parseAlternativeDisplayType(requirement: Any?) = ""
 
     /**
      * Unfortunately, we require all this logic to prevent data
@@ -36,18 +29,35 @@ interface AchievementGoalDataCollector<T> : AbstractTypeSerializable
      */
     fun updateValue(newValue: T, profile: AchievementProfile)
     {
-        val achievement = AchievementService
+        val achievementPairs = AchievementService
             .achievements()
+            .map {
+                it to it.stages.firstOrNull { stage ->
+                    stage.getGoalByIdString(goalId) != null
+                }
+            }
+
+        val achievementPair = achievementPairs
             .firstOrNull {
-                it.stages.any { stage -> stage.getGoalByIdString(goalId) != null }
+                it.second != null
             }
             ?: return
 
+        val achievement = achievementPair.first
+
         val determinedStage = achievement.stages
             .firstOrNull {
-                !achievement.collectedRewardsFor(profile, it)
+                (achievement.rewardsPlayer && !achievement.collectedRewardsFor(profile, it)) || !it.metAllGoalRequirements(profile)
             }
             ?: achievement.stages.last()
+
+        if (
+            achievement.stages.indexOf(determinedStage) !=
+            achievement.stages.indexOf(achievementPair.second)
+        )
+        {
+            return
+        }
 
         val collectedRewards = achievement
             .collectedRewardsFor(profile, determinedStage)
@@ -55,10 +65,22 @@ interface AchievementGoalDataCollector<T> : AbstractTypeSerializable
         val metGoalReqs = determinedStage
             .metAllGoalRequirements(profile)
 
+        if (!achievement.rewardsPlayer)
+        {
+            if (!metGoalReqs)
+            {
+                this.value = newValue
+            }
+
+            return
+        }
+
         val requiresAwardCollection = !collectedRewards && metGoalReqs
         val requiresLiterallyNothing = collectedRewards && metGoalReqs
 
-        if (!requiresLiterallyNothing && !requiresAwardCollection)
+        if (
+            !requiresLiterallyNothing && !requiresAwardCollection
+        )
         {
             this.value = newValue
         }

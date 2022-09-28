@@ -1,9 +1,7 @@
 package gg.scala.achievements.plugin.profile
 
-import gg.scala.achievements.plugin.ScalaAchievementsPlugin
 import gg.scala.achievements.plugin.model.goals.AchievementGoalDataCollector
 import gg.scala.commons.persist.ProfileOrchestrator
-import gg.scala.flavor.inject.Inject
 import gg.scala.flavor.service.Configure
 import gg.scala.flavor.service.Service
 import net.evilblock.cubed.serializers.Serializers
@@ -17,9 +15,6 @@ import java.util.*
 @Service
 object AchievementProfileOrchestrator : ProfileOrchestrator<AchievementProfile>()
 {
-    @Inject
-    lateinit var plugin: ScalaAchievementsPlugin
-
     @Configure
     fun configure()
     {

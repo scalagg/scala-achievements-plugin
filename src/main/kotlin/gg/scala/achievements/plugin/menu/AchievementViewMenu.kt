@@ -36,6 +36,7 @@ class AchievementViewMenu : PaginatedMenu()
             .find(player) ?: return buttons
 
         AchievementService.achievements()
+            .filter(Achievement::visibleWithinMenu)
             .forEach {
                 buttons[buttons.size] = AchievementButton(it, profile)
             }
@@ -52,7 +53,7 @@ class AchievementViewMenu : PaginatedMenu()
     {
         private val determinedStage = achievement.stages
             .firstOrNull {
-                !achievement.collectedRewardsFor(profile, it)
+                (achievement.rewardsPlayer && !achievement.collectedRewardsFor(profile, it)) || !it.metAllGoalRequirements(profile)
             }
             // We're expecting the player to be on their last
             // stage if they don't pass any of these checks.
@@ -67,8 +68,8 @@ class AchievementViewMenu : PaginatedMenu()
         private val metGoalReqs = determinedStage
             .metAllGoalRequirements(profile)
 
-        private val requiresAwardCollection = !collectedRewards && metGoalReqs
-        private val requiresLiterallyNothing = collectedRewards && metGoalReqs
+        private val requiresAwardCollection = (!achievement.rewardsPlayer || !collectedRewards) && metGoalReqs
+        private val requiresLiterallyNothing = (!achievement.rewardsPlayer || collectedRewards) && metGoalReqs
 
         override fun getButtonItem(player: Player): ItemStack
         {
@@ -91,19 +92,22 @@ class AchievementViewMenu : PaginatedMenu()
                 })"
             }
 
-            description += ""
-            description += "${CC.PRI}Rewards:"
-
-            for (reward in determinedStage.rewards)
+            if (determinedStage.rewards.isNotEmpty())
             {
-                description += "${CC.WHITE} - ${reward.description}"
+                description += ""
+                description += "${CC.PRI}Rewards:"
+
+                for (reward in determinedStage.rewards)
+                {
+                    description += "${CC.WHITE} - ${reward.description}"
+                }
             }
 
             description += ""
             description += if (requiresLiterallyNothing)
             {
                 "${CC.GREEN}You've completed this achievement!"
-            } else if (requiresAwardCollection)
+            } else if (requiresAwardCollection && achievement.rewardsPlayer)
             {
                 "${CC.PINK}Click to collect rewards!"
             } else
@@ -115,7 +119,7 @@ class AchievementViewMenu : PaginatedMenu()
                 .of(
                     if (requiresLiterallyNothing)
                         XMaterial.LIME_DYE
-                    else if (requiresAwardCollection)
+                    else if (requiresAwardCollection && achievement.rewardsPlayer)
                         XMaterial.PINK_DYE
                     else
                         XMaterial.GRAY_DYE
@@ -136,7 +140,7 @@ class AchievementViewMenu : PaginatedMenu()
             clickType: ClickType, view: InventoryView
         )
         {
-            if (requiresAwardCollection)
+            if (achievement.rewardsPlayer && requiresAwardCollection)
             {
                 for (reward in determinedStage.rewards)
                 {

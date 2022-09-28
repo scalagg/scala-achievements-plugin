@@ -5,6 +5,7 @@ import gg.scala.achievements.plugin.model.AchievementReward
 import gg.scala.achievements.plugin.model.AchievementStage
 import gg.scala.achievements.plugin.model.goals.AchievementGoal
 import gg.scala.achievements.plugin.model.goals.AchievementGoalDataCollector
+import gg.scala.achievements.plugin.model.goals.IntegerDataCollector
 import gg.scala.achievements.plugin.profile.AchievementProfile
 import gg.scala.achievements.plugin.profile.AchievementProfileOrchestrator
 import gg.scala.flavor.service.Configure
@@ -27,16 +28,6 @@ object AchievementService
 
     fun achievements() = registered
 
-    class IntegerDataCollector(
-        override val goalId: String
-    ) : AchievementGoalDataCollector<Int>
-    {
-        override var value = 0
-
-        override fun getAbstractType() =
-            IntegerDataCollector::class.java
-    }
-
     @Configure
     fun configure()
     {
@@ -47,9 +38,12 @@ object AchievementService
                     .find(it.player)
                     ?: return@handler
 
-                profile
+                val collectorFirst = profile
                     .dataCollector<IntegerDataCollector>("horses_driven")
-                    .updateValue(1, profile)
+
+                collectorFirst.updateValue(
+                    collectorFirst.value + 1, profile
+                )
 
                 val collector = profile
                     .dataCollector<IntegerDataCollector>("horses_driven_v2")
@@ -68,7 +62,7 @@ object AchievementService
                             object : AchievementGoal<Int>
                             {
                                 override val id = "horses_driven"
-                                override val requirement = 1
+                                override val requirement = 2
                                 override val description = "Driven horses"
 
                                 override fun createDataCollector(profile: AchievementProfile): AchievementGoalDataCollector<Int>

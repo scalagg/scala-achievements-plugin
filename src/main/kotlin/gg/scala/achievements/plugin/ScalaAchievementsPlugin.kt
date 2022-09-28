@@ -6,7 +6,7 @@ import me.lucko.helper.plugin.ap.PluginDependency
 
 /**
  * @author GrowlyX
- * @since 8/21/2022
+ * @since 9/27/2022
  */
 @Plugin(
     name = "Achievements",
