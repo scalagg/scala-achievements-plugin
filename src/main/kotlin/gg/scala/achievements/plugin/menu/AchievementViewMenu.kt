@@ -77,7 +77,7 @@ class AchievementViewMenu : PaginatedMenu()
                 .description.toMutableList()
 
             description += ""
-            description += "${CC.PRI}Goals:"
+            description += "${CC.GOLD}Goals:"
 
             for (goal in determinedStage.goals)
             {
@@ -95,7 +95,7 @@ class AchievementViewMenu : PaginatedMenu()
             if (determinedStage.rewards.isNotEmpty())
             {
                 description += ""
-                description += "${CC.PRI}Rewards:"
+                description += "${CC.GOLD}Rewards:"
 
                 for (reward in determinedStage.rewards)
                 {
@@ -125,7 +125,7 @@ class AchievementViewMenu : PaginatedMenu()
                         XMaterial.GRAY_DYE
                 )
                 .name(
-                    "${CC.B_PRI}${achievement.name}${
+                    "${CC.B_GOLD}${achievement.name}${
                         if (achievement.stages.size == 1) "" else ": ${
                             RomanNumerals.toRoman(stageIndex + 1)
                         }"
@@ -151,7 +151,7 @@ class AchievementViewMenu : PaginatedMenu()
                 profile.save()
 
                 player.sendMessage(
-                    "${CC.B_PRI}Achievements ${CC.B_GRAY}${Constants.DOUBLE_ARROW_RIGHT} ${CC.GREEN}You've collected rewards for the ${CC.SEC}${achievement.name}${CC.GREEN} achievement!"
+                    "${CC.B_GOLD}Achievements ${CC.B_GRAY}${Constants.DOUBLE_ARROW_RIGHT} ${CC.GREEN}You've collected rewards for the ${CC.SEC}${achievement.name}${CC.GREEN} achievement!"
                 )
             }
         }
