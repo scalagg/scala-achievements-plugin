@@ -20,8 +20,10 @@ data class AchievementProfile(
     val dataCollectors = mutableMapOf<String, AchievementGoalDataCollector<*>>()
     private val collectedStages = mutableListOf<String>()
 
-    fun ttlDataCollectors() = dataCollectors.values
-        .filterIsInstance<TTLRespectingGoalDataCollector<*>>()
+    fun ttlDataCollectors() = dataCollectors
+        .filterValues {
+            it is TTLRespectingGoalDataCollector<*>
+        }
 
     inline fun <reified T : AchievementGoalDataCollector<*>> dataCollector(id: String) =
         this.dataCollectors[id] as T
@@ -32,19 +34,25 @@ data class AchievementProfile(
     fun setCollectedStage(achievement: Achievement, stage: Int) =
         this.collectedStages.add("${achievement.id}-$stage")
 
+    fun removeCollectedStage(key: String) =
+        this.collectedStages.remove(key)
+
     fun save() = DataStoreObjectControllerCache
         .findNotNull<AchievementProfile>()
         .save(this, DataStoreStorageType.MONGO)
 
-    fun ensureTtlValidities(): Boolean
+    fun ensureDataCollectorsAreHealthy(): Boolean
     {
         var profileSaveRequired = false
 
         ttlDataCollectors()
-            .forEach { ttlDataCollector ->
+            .forEach { dataCollector ->
+                val ttlDataCollector =
+                    dataCollector.value as TTLRespectingGoalDataCollector<*>
                 val result = ttlDataCollector
                     .ttlRefresh(
-                        profile = this, bulk = true
+                        profile = this, bulk = true,
+                        key = dataCollector.key
                     )
 
                 if (!profileSaveRequired && result)

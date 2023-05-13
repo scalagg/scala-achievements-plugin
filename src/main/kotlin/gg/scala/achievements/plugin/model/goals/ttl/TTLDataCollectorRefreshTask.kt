@@ -20,7 +20,7 @@ object TTLDataCollectorRefreshTask : Runnable
                     .find(it)
                     ?: return@forEach
 
-                if (profile.ensureTtlValidities())
+                if (profile.ensureDataCollectorsAreHealthy())
                 {
                     profile.save()
                 }

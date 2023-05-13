@@ -17,7 +17,8 @@ interface TTLRespectingGoalDataCollector<T> : AchievementGoalDataCollector<T>
 
     fun ttlRefresh(
         profile: AchievementProfile,
-        bulk: Boolean = false
+        bulk: Boolean = false,
+        key: String
     ): Boolean
     {
         if (timeUntilNextRefreshMillis() >= 0)
@@ -27,6 +28,8 @@ interface TTLRespectingGoalDataCollector<T> : AchievementGoalDataCollector<T>
 
         lastTtlHeartbeat = System.currentTimeMillis()
         value = defaultValueOf()
+
+        profile.removeCollectedStage(key)
 
         if (!bulk)
         {

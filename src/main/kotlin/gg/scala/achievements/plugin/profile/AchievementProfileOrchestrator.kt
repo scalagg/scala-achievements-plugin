@@ -32,7 +32,7 @@ object AchievementProfileOrchestrator : ProfileOrchestrator<AchievementProfile>(
             ?: return
 
         profile.populateDataCollectors()
-        if (profile.ensureTtlValidities())
+        if (profile.ensureDataCollectorsAreHealthy())
         {
             profile.save()
         }
