@@ -3,7 +3,6 @@ package gg.scala.achievements.plugin.menu
 import com.cryptomorin.xseries.XMaterial
 import gg.scala.achievements.plugin.model.Achievement
 import gg.scala.achievements.plugin.model.AchievementBrandType
-import gg.scala.achievements.plugin.model.AchievementType
 import gg.scala.achievements.plugin.model.goals.ttl.TTLRespectingGoalDataCollector
 import gg.scala.achievements.plugin.numeric.RomanNumerals
 import gg.scala.achievements.plugin.profile.AchievementProfile
@@ -12,10 +11,8 @@ import gg.scala.achievements.plugin.service.AchievementService
 import net.evilblock.cubed.menu.Button
 import net.evilblock.cubed.menu.pagination.PaginatedMenu
 import net.evilblock.cubed.util.CC
-import net.evilblock.cubed.util.bukkit.Constants
 import net.evilblock.cubed.util.bukkit.ItemBuilder
 import net.evilblock.cubed.util.time.TimeUtil
-import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.inventory.InventoryView
