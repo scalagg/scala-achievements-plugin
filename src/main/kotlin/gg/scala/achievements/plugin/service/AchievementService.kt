@@ -6,6 +6,7 @@ import gg.scala.achievements.plugin.model.AchievementStage
 import gg.scala.achievements.plugin.model.goals.AchievementGoal
 import gg.scala.achievements.plugin.model.goals.AchievementGoalDataCollector
 import gg.scala.achievements.plugin.model.goals.IntegerDataCollector
+import gg.scala.achievements.plugin.model.goals.TtlIntegerDataCollector
 import gg.scala.achievements.plugin.profile.AchievementProfile
 import gg.scala.achievements.plugin.profile.AchievementProfileOrchestrator
 import gg.scala.flavor.service.Configure
@@ -93,10 +94,8 @@ object AchievementService
                                 override val requirement = 5
                                 override val description = "Driven horses"
 
-                                override fun createDataCollector(profile: AchievementProfile): AchievementGoalDataCollector<Int>
-                                {
-                                    return IntegerDataCollector(id)
-                                }
+                                override fun createDataCollector(profile: AchievementProfile) =
+                                    TtlIntegerDataCollector(id)
                             }
                         ),
                         listOf(

@@ -86,7 +86,7 @@ class AchievementViewMenu(
             var timeUntilNextReset = -1L
 
             description += ""
-            description += "${CC.GOLD}Goals:"
+            description += "${CC.PRI}Goals:"
 
             for (goal in determinedStage.goals)
             {
@@ -110,7 +110,7 @@ class AchievementViewMenu(
             if (determinedStage.rewards.isNotEmpty())
             {
                 description += ""
-                description += "${CC.GOLD}Rewards:"
+                description += "${CC.PRI}Rewards:"
 
                 for (reward in determinedStage.rewards)
                 {
@@ -132,13 +132,13 @@ class AchievementViewMenu(
             description += ""
             description += if (requiresLiterallyNothing)
             {
-                "${CC.GREEN}You've completed this $brand!"
+                "${CC.GREEN}${branding.singular} completed!"
             } else if (requiresAwardCollection && achievement.rewardsPlayer)
             {
                 "${CC.PINK}Click to collect rewards!"
             } else
             {
-                "${CC.YELLOW}You're working on this $brand."
+                "${CC.YELLOW}Completion in-progress..."
             }
 
             return ItemBuilder
@@ -151,7 +151,7 @@ class AchievementViewMenu(
                         XMaterial.GRAY_DYE
                 )
                 .name(
-                    "${CC.B_GOLD}${achievement.name}${
+                    "${CC.B_PRI}${achievement.name}${
                         if (achievement.stages.size == 1) "" else ": ${
                             RomanNumerals.toRoman(stageIndex + 1)
                         }"
