@@ -32,7 +32,8 @@ object AchievementService
     fun configure()
     {
         // testing
-        Events.subscribe(PlayerGameModeChangeEvent::class.java)
+        Events
+            .subscribe(PlayerGameModeChangeEvent::class.java)
             .handler {
                 val profile = AchievementProfileOrchestrator
                     .find(it.player)

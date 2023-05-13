@@ -32,6 +32,10 @@ object AchievementProfileOrchestrator : ProfileOrchestrator<AchievementProfile>(
             ?: return
 
         profile.populateDataCollectors()
+        if (profile.ensureTtlValidities())
+        {
+            profile.save()
+        }
     }
 
     override fun new(uniqueId: UUID) = AchievementProfile(uniqueId)

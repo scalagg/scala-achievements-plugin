@@ -70,6 +70,7 @@ interface AchievementGoalDataCollector<T> : AbstractTypeSerializable
             if (!metGoalReqs)
             {
                 this.value = newValue
+                profile.save()
             }
 
             return
@@ -83,6 +84,7 @@ interface AchievementGoalDataCollector<T> : AbstractTypeSerializable
         )
         {
             this.value = newValue
+            profile.save()
         }
     }
 }

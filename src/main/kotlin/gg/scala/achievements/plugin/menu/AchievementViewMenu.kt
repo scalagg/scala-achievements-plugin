@@ -2,6 +2,9 @@ package gg.scala.achievements.plugin.menu
 
 import com.cryptomorin.xseries.XMaterial
 import gg.scala.achievements.plugin.model.Achievement
+import gg.scala.achievements.plugin.model.AchievementBrandType
+import gg.scala.achievements.plugin.model.AchievementType
+import gg.scala.achievements.plugin.model.goals.ttl.TTLRespectingGoalDataCollector
 import gg.scala.achievements.plugin.numeric.RomanNumerals
 import gg.scala.achievements.plugin.profile.AchievementProfile
 import gg.scala.achievements.plugin.profile.AchievementProfileOrchestrator
@@ -11,6 +14,7 @@ import net.evilblock.cubed.menu.pagination.PaginatedMenu
 import net.evilblock.cubed.util.CC
 import net.evilblock.cubed.util.bukkit.Constants
 import net.evilblock.cubed.util.bukkit.ItemBuilder
+import net.evilblock.cubed.util.time.TimeUtil
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
@@ -21,7 +25,10 @@ import org.bukkit.inventory.ItemStack
  * @author GrowlyX
  * @since 9/27/2022
  */
-class AchievementViewMenu : PaginatedMenu()
+class AchievementViewMenu(
+    private val branding: AchievementBrandType =
+        AchievementBrandType.Achievement
+) : PaginatedMenu()
 {
     init
     {
@@ -44,9 +51,9 @@ class AchievementViewMenu : PaginatedMenu()
         return buttons
     }
 
-    override fun getPrePaginatedTitle(player: Player) = "Achievements"
+    override fun getPrePaginatedTitle(player: Player) = branding.plural
 
-    data class AchievementButton(
+    inner class AchievementButton(
         private val achievement: Achievement,
         private val profile: AchievementProfile
     ) : Button()
@@ -76,6 +83,8 @@ class AchievementViewMenu : PaginatedMenu()
             val description = determinedStage
                 .description.toMutableList()
 
+            var timeUntilNextReset = -1L
+
             description += ""
             description += "${CC.GOLD}Goals:"
 
@@ -90,6 +99,12 @@ class AchievementViewMenu : PaginatedMenu()
                     else
                         "${dataCollector.value}/${goal.requirement}"
                 })"
+
+                if (dataCollector is TTLRespectingGoalDataCollector<*>)
+                {
+                    timeUntilNextReset = dataCollector
+                        .timeUntilNextRefreshMillis()
+                }
             }
 
             if (determinedStage.rewards.isNotEmpty())
@@ -103,16 +118,27 @@ class AchievementViewMenu : PaginatedMenu()
                 }
             }
 
+            val brand = branding.singular.lowercase()
+
+            if (timeUntilNextReset != -1L)
+            {
+                description += ""
+                description += "${CC.WHITE}Resets in:"
+                description += "${CC.WHITE}${
+                    TimeUtil.formatIntoMMSS((timeUntilNextReset / 1000).toInt())
+                }"
+            }
+
             description += ""
             description += if (requiresLiterallyNothing)
             {
-                "${CC.GREEN}You've completed this achievement!"
+                "${CC.GREEN}You've completed this $brand!"
             } else if (requiresAwardCollection && achievement.rewardsPlayer)
             {
                 "${CC.PINK}Click to collect rewards!"
             } else
             {
-                "${CC.YELLOW}You're working on this achievement."
+                "${CC.YELLOW}You're working on this $brand."
             }
 
             return ItemBuilder
@@ -151,7 +177,7 @@ class AchievementViewMenu : PaginatedMenu()
                 profile.save()
 
                 player.sendMessage(
-                    "${CC.B_GOLD}Achievements ${CC.B_GRAY}${Constants.DOUBLE_ARROW_RIGHT} ${CC.GREEN}You've collected rewards for the ${CC.SEC}${achievement.name}${CC.GREEN} achievement!"
+                    "${CC.GREEN}You've collected rewards for the ${CC.WHITE}${achievement.name}${CC.GREEN} ${branding.singular.lowercase()}!"
                 )
             }
         }

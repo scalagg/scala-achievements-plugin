@@ -10,7 +10,8 @@ data class Achievement(
     val id: String, val name: String,
     val stages: LinkedHashSet<AchievementStage>,
     val rewardsPlayer: Boolean = true,
-    val visibleWithinMenu: Boolean = true
+    val visibleWithinMenu: Boolean = true,
+    val type: AchievementType = AchievementType.Permanent
 )
 {
     fun collectedRewardsFor(profile: AchievementProfile, stage: AchievementStage) =

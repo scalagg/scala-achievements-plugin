@@ -1,8 +1,8 @@
 package gg.scala.achievements.plugin.profile
 
 import gg.scala.achievements.plugin.model.Achievement
-import gg.scala.achievements.plugin.model.AchievementStage
 import gg.scala.achievements.plugin.model.goals.AchievementGoalDataCollector
+import gg.scala.achievements.plugin.model.goals.ttl.TTLRespectingGoalDataCollector
 import gg.scala.achievements.plugin.service.AchievementService
 import gg.scala.store.controller.DataStoreObjectControllerCache
 import gg.scala.store.storage.storable.IDataStoreObject
@@ -20,6 +20,9 @@ data class AchievementProfile(
     val dataCollectors = mutableMapOf<String, AchievementGoalDataCollector<*>>()
     private val collectedStages = mutableListOf<String>()
 
+    fun ttlDataCollectors() = dataCollectors.values
+        .filterIsInstance<TTLRespectingGoalDataCollector<*>>()
+
     inline fun <reified T : AchievementGoalDataCollector<*>> dataCollector(id: String) =
         this.dataCollectors[id] as T
 
@@ -32,6 +35,26 @@ data class AchievementProfile(
     fun save() = DataStoreObjectControllerCache
         .findNotNull<AchievementProfile>()
         .save(this, DataStoreStorageType.MONGO)
+
+    fun ensureTtlValidities(): Boolean
+    {
+        var profileSaveRequired = false
+
+        ttlDataCollectors()
+            .forEach { ttlDataCollector ->
+                val result = ttlDataCollector
+                    .ttlRefresh(
+                        profile = this, bulk = true
+                    )
+
+                if (!profileSaveRequired && result)
+                {
+                    profileSaveRequired = true
+                }
+            }
+
+        return profileSaveRequired
+    }
 
     fun populateDataCollectors()
     {
