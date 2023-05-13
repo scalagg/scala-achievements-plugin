@@ -7,6 +7,7 @@ package gg.scala.achievements.plugin.model
 enum class AchievementBrandType(
     val singular: String,
     val plural: String = "${singular}s",
+    val filter: (gg.scala.achievements.plugin.model.Achievement) -> Boolean = { true }
 )
 {
     Achievement(singular = "Achievement"),

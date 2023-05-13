@@ -30,6 +30,8 @@ class AchievementViewMenu(
     init
     {
         updateAfterClick = true
+        autoUpdate = true
+        autoUpdateInterval = 1000L
     }
 
     override fun getAllPagesButtons(player: Player): Map<Int, Button>
@@ -41,6 +43,7 @@ class AchievementViewMenu(
 
         AchievementService.achievements()
             .filter(Achievement::visibleWithinMenu)
+            .filter { branding.filter.invoke(it) }
             .forEach {
                 buttons[buttons.size] = AchievementButton(it, profile)
             }
