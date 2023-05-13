@@ -48,7 +48,7 @@ object AchievementService
                 )
 
                 val collector = profile
-                    .dataCollector<IntegerDataCollector>("horses_driven_v2")
+                    .dataCollector<TtlIntegerDataCollector>("horses_driven_v2")
 
                 collector.updateValue(
                     collector.value + 1, profile

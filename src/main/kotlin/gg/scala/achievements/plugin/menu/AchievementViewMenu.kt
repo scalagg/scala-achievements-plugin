@@ -31,7 +31,7 @@ class AchievementViewMenu(
     {
         updateAfterClick = true
         autoUpdate = true
-        autoUpdateInterval = 1000L
+        autoUpdateInterval = 500L
     }
 
     override fun getAllPagesButtons(player: Player): Map<Int, Button>
@@ -86,7 +86,7 @@ class AchievementViewMenu(
             var timeUntilNextReset = -1L
 
             description += ""
-            description += "${CC.PRI}Goals:"
+            description += "${CC.GREEN}Goals:"
 
             for (goal in determinedStage.goals)
             {
@@ -110,7 +110,7 @@ class AchievementViewMenu(
             if (determinedStage.rewards.isNotEmpty())
             {
                 description += ""
-                description += "${CC.PRI}Rewards:"
+                description += "${CC.GREEN}Rewards:"
 
                 for (reward in determinedStage.rewards)
                 {
@@ -118,14 +118,11 @@ class AchievementViewMenu(
                 }
             }
 
-            val brand = branding.singular.lowercase()
-
             if (timeUntilNextReset != -1L)
             {
                 description += ""
-                description += "${CC.WHITE}Resets in:"
-                description += "${CC.WHITE}${
-                    TimeUtil.formatIntoMMSS((timeUntilNextReset / 1000).toInt())
+                description += "${CC.GREEN}Resets in: ${CC.WHITE}${
+                    TimeUtil.formatIntoAbbreviatedString((timeUntilNextReset / 1000).toInt())
                 }"
             }
 
@@ -151,7 +148,7 @@ class AchievementViewMenu(
                         XMaterial.GRAY_DYE
                 )
                 .name(
-                    "${CC.B_PRI}${achievement.name}${
+                    "${CC.GREEN}${achievement.name}${
                         if (achievement.stages.size == 1) "" else ": ${
                             RomanNumerals.toRoman(stageIndex + 1)
                         }"
