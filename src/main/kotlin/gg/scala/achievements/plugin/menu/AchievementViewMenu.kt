@@ -83,7 +83,7 @@ class AchievementViewMenu(
             val description = determinedStage
                 .description.toMutableList()
 
-            var timeUntilNextReset = -1L
+            var timeUntilNextReset = -1
 
             description += ""
             description += "${CC.GREEN}Goals:"
@@ -118,7 +118,7 @@ class AchievementViewMenu(
                 }
             }
 
-            if (timeUntilNextReset != -1L)
+            if (timeUntilNextReset != -1)
             {
                 description += ""
                 description += "${CC.GREEN}Resets in: ${CC.WHITE}${

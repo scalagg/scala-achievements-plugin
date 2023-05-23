@@ -16,6 +16,6 @@ object AchievementsCommand : ScalaCommand()
     @CommandAlias("achievement|achievements|achieve")
     fun onAchievements(player: ScalaPlayer)
     {
-       AchievementViewMenu().openMenu(player.bukkit())
+        AchievementViewMenu().openMenu(player.bukkit())
     }
 }

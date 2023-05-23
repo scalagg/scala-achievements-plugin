@@ -2,7 +2,11 @@ package gg.scala.achievements.plugin.model.goals.ttl
 
 import gg.scala.achievements.plugin.model.goals.AchievementGoalDataCollector
 import gg.scala.achievements.plugin.profile.AchievementProfile
-import java.time.Duration
+import org.joda.time.DateTime
+import org.joda.time.Instant
+import org.joda.time.LocalDateTime
+import org.joda.time.Period
+import java.time.LocalDate
 
 /**
  * @author GrowlyX
@@ -12,8 +16,8 @@ interface TTLRespectingGoalDataCollector<T> : AchievementGoalDataCollector<T>
 {
     var lastTtlHeartbeat: Long
 
-    fun ttl(): Duration
     fun defaultValueOf(): T
+    fun nextExpectedTtlRefresh(): DateTime
 
     fun ttlRefresh(
         profile: AchievementProfile,
@@ -26,7 +30,7 @@ interface TTLRespectingGoalDataCollector<T> : AchievementGoalDataCollector<T>
             return false
         }
 
-        lastTtlHeartbeat = System.currentTimeMillis()
+        lastTtlHeartbeat = DateTime.now().millis
         value = defaultValueOf()
 
         profile.removeCollectedStage(key)
@@ -39,6 +43,9 @@ interface TTLRespectingGoalDataCollector<T> : AchievementGoalDataCollector<T>
         return true
     }
 
-    fun nextExpectedTtlRefreshMillis() = lastTtlHeartbeat + ttl().toMillis()
-    fun timeUntilNextRefreshMillis() = nextExpectedTtlRefreshMillis() - System.currentTimeMillis()
+    fun timeUntilNextRefreshMillis() =
+        Period(
+            DateTime.now().millis,
+            nextExpectedTtlRefresh().millis
+        ).millis
 }

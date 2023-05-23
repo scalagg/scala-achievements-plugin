@@ -7,7 +7,7 @@ plugins {
 }
 
 group "gg.scala.achievements"
-version "1.0.0"
+version "1.0.2"
 
 repositories {
     mavenCentral()
@@ -33,6 +33,7 @@ repositories {
 
 dependencies {
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib:1.7.20"
+    api "joda-time:joda-time:2.12.5"
 
     compileOnly "me.lucko:helper:5.6.10.2"
     kapt "me.lucko:helper:5.6.10.2"
