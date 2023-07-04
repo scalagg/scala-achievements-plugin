@@ -5,8 +5,8 @@ import net.evilblock.cubed.serializers.Serializers
 import net.evilblock.cubed.util.Reflection
 
 /**
- * A reference class which wraps model data, allowing platforms
- * without the original model [clazz] loaded at runtime
+ * A reference class which wraps plugin-specific data collectors, allowing other
+ * gamemodes without the original model [clazz] loaded at runtime
  * to deserialize other, available, reference items without issues arising.
  *
  * @author GrowlyX
@@ -21,33 +21,41 @@ class ReferenceDataCollector(
     var backingType: Class<*>? = null
     var unwrapChecked: Boolean? = null
 
+    inline fun <reified T> unwrap(): T?
+    {
+        synchronized(properties)
+        {
+            val clazz = Reflection
+                .getClassSuppressed(clazz)
+                ?: return let {
+                    unwrapChecked = true
+                    backingInstance = null
+                    null
+                }
+
+            backingType = clazz
+
+            val unwrapped = Serializers
+                .gson
+                .fromJson(properties, clazz)
+                ?: return let {
+                    unwrapChecked = true
+                    backingInstance = null
+                    null
+                }
+
+            unwrapChecked = true
+            backingInstance = unwrapped
+            return unwrapped as T
+        }
+    }
+
     inline fun <reified T> unwrapped(): T?
     {
         if (unwrapChecked != null)
             return if (backingInstance == null)
                 null else backingInstance as T?
 
-        val clazz = Reflection
-            .getClassSuppressed(clazz)
-            ?: return let {
-                unwrapChecked = true
-                backingInstance = null
-                null
-            }
-
-        backingType = clazz
-
-        val unwrapped = Serializers
-            .gson
-            .fromJson(properties, clazz)
-            ?: return let {
-                unwrapChecked = true
-                backingInstance = null
-                null
-            }
-
-        unwrapChecked = true
-        backingInstance = unwrapped
-        return unwrapped as T
+        return unwrap()
     }
 }

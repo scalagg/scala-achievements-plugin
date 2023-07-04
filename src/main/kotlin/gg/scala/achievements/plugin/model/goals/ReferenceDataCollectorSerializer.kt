@@ -8,11 +8,11 @@ import java.lang.reflect.Type
 
 /**
  * Since data collectors can, and will probably be plugin-specific, we
- * have to have a way to keep the original data without losing it
- * if unwrapping it into a Java class fails.
+ * need a way to keep original model data without losing it
+ * we fail to unwrap it into a Java class.
  *
  * This serializer also pushes new collector properties if the model has
- * been unwrapped (assuming updates have occurred).
+ * been unwrapped (assuming updates have been made).
  *
  * @author GrowlyX
  * @since 7/4/2023
