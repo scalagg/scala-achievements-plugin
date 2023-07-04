@@ -13,7 +13,7 @@ import gg.scala.commons.issuer.ScalaPlayer
 @AutoRegister
 object AchievementsCommand : ScalaCommand()
 {
-    @CommandAlias("achievement|achievements|achieve")
+    @CommandAlias("achievement|achievements|achieve|quests")
     fun onAchievements(player: ScalaPlayer)
     {
         AchievementViewMenu().openMenu(player.bukkit())

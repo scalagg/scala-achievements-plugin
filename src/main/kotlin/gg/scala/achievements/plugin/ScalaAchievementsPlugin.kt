@@ -1,8 +1,13 @@
 package gg.scala.achievements.plugin
 
+import gg.scala.achievements.plugin.model.AchievementBrandType
+import gg.scala.achievements.plugin.model.goals.ReferenceDataCollector
+import gg.scala.achievements.plugin.model.goals.ReferenceDataCollectorSerializer
 import gg.scala.commons.ExtendedScalaPlugin
+import gg.scala.commons.annotations.container.ContainerEnable
 import me.lucko.helper.plugin.ap.Plugin
 import me.lucko.helper.plugin.ap.PluginDependency
+import net.evilblock.cubed.serializers.Serializers
 
 /**
  * @author GrowlyX
@@ -17,3 +22,20 @@ import me.lucko.helper.plugin.ap.PluginDependency
     ]
 )
 class ScalaAchievementsPlugin : ExtendedScalaPlugin()
+{
+    companion object
+    {
+        var branding = AchievementBrandType.Achievement
+    }
+
+    @ContainerEnable
+    fun containerEnable()
+    {
+        Serializers.create {
+            registerTypeAdapter(
+                ReferenceDataCollector::class.java,
+                ReferenceDataCollectorSerializer
+            )
+        }
+    }
+}

@@ -11,5 +11,6 @@ enum class AchievementBrandType(
 )
 {
     Achievement(singular = "Achievement"),
-    Challenge(singular = "Challenge")
+    Challenge(singular = "Challenge"),
+    Quest(singular = "Quest"),
 }

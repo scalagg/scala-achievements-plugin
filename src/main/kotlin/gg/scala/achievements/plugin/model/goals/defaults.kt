@@ -1,8 +1,5 @@
 package gg.scala.achievements.plugin.model.goals
 
-import gg.scala.achievements.plugin.model.goals.ttl.TTLRespectingGoalDataCollector
-import java.time.Duration
-
 /**
  * @author GrowlyX
  * @since 9/27/2022

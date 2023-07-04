@@ -1,8 +1,10 @@
 package gg.scala.achievements.plugin.menu
 
 import com.cryptomorin.xseries.XMaterial
+import gg.scala.achievements.plugin.ScalaAchievementsPlugin
 import gg.scala.achievements.plugin.model.Achievement
 import gg.scala.achievements.plugin.model.AchievementBrandType
+import gg.scala.achievements.plugin.model.goals.AchievementGoalDataCollector
 import gg.scala.achievements.plugin.model.goals.ttl.TTLRespectingGoalDataCollector
 import gg.scala.achievements.plugin.numeric.RomanNumerals
 import gg.scala.achievements.plugin.profile.AchievementProfile
@@ -24,7 +26,7 @@ import org.bukkit.inventory.ItemStack
  */
 class AchievementViewMenu(
     private val branding: AchievementBrandType =
-        AchievementBrandType.Achievement
+        ScalaAchievementsPlugin.branding
 ) : PaginatedMenu()
 {
     init
@@ -81,7 +83,11 @@ class AchievementViewMenu(
         override fun getButtonItem(player: Player): ItemStack
         {
             val description = determinedStage
-                .description.toMutableList()
+                .description
+                .map {
+                    "${CC.GRAY}$it"
+                }
+                .toMutableList()
 
             var timeUntilNextReset = -1
 
@@ -90,7 +96,8 @@ class AchievementViewMenu(
 
             for (goal in determinedStage.goals)
             {
-                val dataCollector = profile.dataCollectors[goal.id]
+                val dataCollector = profile
+                    .dataCollector<AchievementGoalDataCollector<*>>(goal.id)
                     ?: continue
 
                 description += "${CC.WHITE} - ${goal.description} ${CC.GRAY}(${
@@ -122,7 +129,7 @@ class AchievementViewMenu(
             {
                 description += ""
                 description += "${CC.GREEN}Resets in: ${CC.WHITE}${
-                    TimeUtil.formatIntoAbbreviatedString((timeUntilNextReset / 1000).toInt())
+                    TimeUtil.formatIntoAbbreviatedString((timeUntilNextReset / 1000))
                 }"
             }
 
@@ -148,7 +155,7 @@ class AchievementViewMenu(
                         XMaterial.GRAY_DYE
                 )
                 .name(
-                    "${CC.GREEN}${achievement.name}${
+                    "${CC.B_GREEN}${achievement.name}${
                         if (achievement.stages.size == 1) "" else ": ${
                             RomanNumerals.toRoman(stageIndex + 1)
                         }"

@@ -1,6 +1,7 @@
 package gg.scala.achievements.plugin.model
 
 import gg.scala.achievements.plugin.model.goals.AchievementGoal
+import gg.scala.achievements.plugin.model.goals.AchievementGoalDataCollector
 import gg.scala.achievements.plugin.profile.AchievementProfile
 
 /**
@@ -24,6 +25,10 @@ class AchievementStage(
                 }
                 ?: return@all false
 
-            collector.value.value == it.requirement
+            val thing = collector.value
+                .unwrapped<AchievementGoalDataCollector<*>>()
+                ?: return@all false
+
+            thing.value == it.requirement
         }
 }
