@@ -3,10 +3,8 @@ package gg.scala.achievements.plugin.model.goals.ttl
 import gg.scala.achievements.plugin.model.goals.AchievementGoalDataCollector
 import gg.scala.achievements.plugin.profile.AchievementProfile
 import org.joda.time.DateTime
-import org.joda.time.Instant
-import org.joda.time.LocalDateTime
 import org.joda.time.Period
-import java.time.LocalDate
+import org.joda.time.PeriodType
 
 /**
  * @author GrowlyX
@@ -25,7 +23,7 @@ interface TTLRespectingGoalDataCollector<T> : AchievementGoalDataCollector<T>
         key: String
     ): Boolean
     {
-        if (timeUntilNextRefreshMillis() >= 0)
+        if (nextExpectedTtlRefresh().isAfterNow)
         {
             return false
         }
@@ -45,7 +43,8 @@ interface TTLRespectingGoalDataCollector<T> : AchievementGoalDataCollector<T>
 
     fun timeUntilNextRefreshMillis() =
         Period(
-            DateTime.now().millis,
-            nextExpectedTtlRefresh().millis
+            DateTime.now(),
+            nextExpectedTtlRefresh(),
+            PeriodType.millis()
         ).millis
 }

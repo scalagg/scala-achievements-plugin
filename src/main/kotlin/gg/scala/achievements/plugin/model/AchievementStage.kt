@@ -29,6 +29,6 @@ class AchievementStage(
                 .unwrapped<AchievementGoalDataCollector<*>>()
                 ?: return@all false
 
-            thing.value == it.requirement
+            it.matchesRequirement(thing.value)
         }
 }

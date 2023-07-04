@@ -51,14 +51,6 @@ interface AchievementGoalDataCollector<T> : AbstractTypeSerializable
             }
             ?: achievement.stages.last()
 
-        if (
-            achievement.stages.indexOf(determinedStage) !=
-            achievement.stages.indexOf(achievementPair.second)
-        )
-        {
-            return
-        }
-
         val collectedRewards = achievement
             .collectedRewardsFor(profile, determinedStage)
 

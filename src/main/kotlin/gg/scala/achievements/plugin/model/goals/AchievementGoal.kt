@@ -18,4 +18,5 @@ interface AchievementGoal<T>
     val description: String
 
     fun createDataCollector(profile: AchievementProfile): AchievementGoalDataCollector<T>
+    fun matchesRequirement(value: Any?) = value == requirement
 }
