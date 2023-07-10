@@ -9,12 +9,13 @@ import gg.scala.achievements.plugin.model.goals.ttl.TTLRespectingGoalDataCollect
 import gg.scala.achievements.plugin.numeric.RomanNumerals
 import gg.scala.achievements.plugin.profile.AchievementProfile
 import gg.scala.achievements.plugin.profile.AchievementProfileOrchestrator
-import gg.scala.achievements.plugin.service.AchievementService
 import net.evilblock.cubed.menu.Button
 import net.evilblock.cubed.menu.pagination.PaginatedMenu
 import net.evilblock.cubed.util.CC
 import net.evilblock.cubed.util.bukkit.ItemBuilder
+import net.evilblock.cubed.util.bukkit.Tasks
 import net.evilblock.cubed.util.time.TimeUtil
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.inventory.InventoryView
@@ -26,7 +27,9 @@ import org.bukkit.inventory.ItemStack
  */
 class AchievementViewMenu(
     private val branding: AchievementBrandType =
-        ScalaAchievementsPlugin.branding
+        ScalaAchievementsPlugin.branding,
+    private val achievements: List<Achievement>,
+    private val customName: String? = null
 ) : PaginatedMenu()
 {
     init
@@ -34,7 +37,15 @@ class AchievementViewMenu(
         updateAfterClick = true
         autoUpdate = true
         autoUpdateInterval = 500L
+        placeholdBorders = true
     }
+
+    override fun getAllPagesButtonSlots() = listOf(
+        10, 11, 12, 13, 14, 15, 16,
+        19, 20, 21, 22, 23, 24, 25
+    )
+
+    override fun getMaxItemsPerPage(player: Player) = 14
 
     override fun getAllPagesButtons(player: Player): Map<Int, Button>
     {
@@ -43,7 +54,7 @@ class AchievementViewMenu(
         val profile = AchievementProfileOrchestrator
             .find(player) ?: return buttons
 
-        AchievementService.achievements()
+        achievements
             .filter(Achievement::visibleWithinMenu)
             .filter { branding.filter.invoke(it) }
             .forEach {
@@ -53,7 +64,40 @@ class AchievementViewMenu(
         return buttons
     }
 
-    override fun getPrePaginatedTitle(player: Player) = branding.plural
+    override fun getGlobalButtons(player: Player): Map<Int, Button>?
+    {
+        val buttons = mutableMapOf<Int, Button>()
+
+        buttons[31] = ItemBuilder
+            .of(Material.ARROW)
+            .name("${CC.GREEN}Go back")
+            .toButton { _, _ ->
+                openPreviousMenu(player)
+            }
+
+        return buttons
+    }
+
+    private fun openPreviousMenu(player: Player)
+    {
+        AchievementMainMenu().openMenu(player)
+    }
+
+    override fun onClose(
+        player: Player, manualClose: Boolean
+    )
+    {
+        if (manualClose)
+        {
+            Tasks.delayed(1L) {
+                openPreviousMenu(player)
+            }
+        }
+    }
+
+    override fun getPrePaginatedTitle(player: Player) = customName ?: branding.plural
+
+    override fun size(buttons: Map<Int, Button>) = 36
 
     inner class AchievementButton(
         private val achievement: Achievement,

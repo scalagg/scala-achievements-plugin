@@ -1,6 +1,7 @@
 package gg.scala.achievements.plugin
 
 import gg.scala.achievements.plugin.model.AchievementBrandType
+import gg.scala.achievements.plugin.model.GameMode
 import gg.scala.achievements.plugin.model.goals.ReferenceDataCollector
 import gg.scala.achievements.plugin.model.goals.ReferenceDataCollectorSerializer
 import gg.scala.commons.ExtendedScalaPlugin
@@ -26,6 +27,7 @@ class ScalaAchievementsPlugin : ExtendedScalaPlugin()
     companion object
     {
         var branding = AchievementBrandType.Achievement
+        var gamemode: GameMode? = null
     }
 
     @ContainerEnable
