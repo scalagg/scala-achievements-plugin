@@ -6,6 +6,10 @@ import gg.scala.achievements.plugin.model.goals.ReferenceDataCollector
 import gg.scala.achievements.plugin.model.goals.ReferenceDataCollectorSerializer
 import gg.scala.commons.ExtendedScalaPlugin
 import gg.scala.commons.annotations.container.ContainerEnable
+import gg.scala.commons.core.plugin.PluginDependency
+import gg.scala.commons.core.plugin.Plugin
+import gg.scala.commons.core.plugin.PluginAuthor
+import gg.scala.commons.core.plugin.PluginWebsite
 import net.evilblock.cubed.serializers.Serializers
 
 /**
@@ -18,8 +22,8 @@ import net.evilblock.cubed.serializers.Serializers
     version = "%remote%/%branch%/%id%"
 )
 
-@PluginAuthor("Tropic")
-@PluginWebsite("https://tropic.gg")
+@PluginAuthor("Scala")
+@PluginWebsite("https://scala.gg")
 
 @PluginDependency("scala-commons")
 @PluginDependency("cloudsync", soft = true)
