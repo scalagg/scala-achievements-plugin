@@ -69,7 +69,7 @@ class AchievementViewMenu(
         val buttons = mutableMapOf<Int, Button>()
 
         buttons[31] = ItemBuilder
-            .of(Material.ARROW)
+            .of(XMaterial.ARROW)
             .name("${CC.GREEN}Go back")
             .toButton { _, _ ->
                 openPreviousMenu(player)
